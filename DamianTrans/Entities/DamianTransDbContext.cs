@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DamianTrans.Models;
 
 namespace DamianTrans.Entities
 {
@@ -23,40 +24,11 @@ namespace DamianTrans.Entities
         public DbSet<ThingToDeliver> ThingsToDeliver { get; set; }
         public DbSet<Worker> Workers { get; set; }
 
-        //protected override void OnModelCreating(ModelBuilder modelbuilder)
-        //{
-        //    modelbuilder.Entity<Delivery>()
-        //        .HasOne(p => p.Car)
-        //        .WithMany(p => p.Deliveries)
-        //        .OnDelete(DeleteBehavior.SetNull);
-
-        //    modelbuilder.Entity<Delivery>()
-        //        .HasOne(p => p.Worker)
-        //        .WithMany(p => p.Deliveries)
-        //        .OnDelete(DeleteBehavior.SetNull);
-
-        //    modelbuilder.Entity<Delivery>()
-        //        .HasOne(p => p.Client)
-        //        .WithMany(p => p.Deliveries)
-        //        .OnDelete(DeleteBehavior.SetNull);
-
-        //    //var changeToSetNullWhenDelete = modelbuilder.Entity<Delivery>();
-
-        //    //foreach (var element in changeToSetNullWhenDelete)
-        //    //{
-        //    //    element.DeleteBehavior = DeleteBehavior.SetNull;
-        //    //}
-
-        //    //foreach (var relationship in modelbuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-        //    //{
-        //    //    relationship.DeleteBehavior = DeleteBehavior.SetNull;
-        //    //}
-
-        //    //base.OnModelCreating(modelbuilder);
-        //}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_connectionString);
         }
+
+        public DbSet<DamianTrans.Models.CreateCarDto> CreateCarDto { get; set; }
     }
 }

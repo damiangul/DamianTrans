@@ -19,6 +19,8 @@ namespace DamianTrans.Entities
         [MaxLength(30)]
         public string Surname { get; set; }
         [Required]
+        public string PasswordHash { get; set; }
+        [Required]
         [MaxLength(15)]
         public string PhoneNumber { get; set; }
         [Required]
