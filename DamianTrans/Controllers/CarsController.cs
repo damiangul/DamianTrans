@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using DamianTrans.Entities;
 using DamianTrans.Models;
+using DamianTrans.Services;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,19 +16,17 @@ namespace DamianTrans.Controllers
     [ApiController]
     public class CarsController : Controller
     {
-        private readonly DamianTransDbContext _dbContext;
-        private readonly IMapper _mapper;
+        private readonly ICarService _service;
 
-        public CarsController(DamianTransDbContext dbContext, IMapper mapper)
+        public CarsController(ICarService service)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
+            _service = service;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            var cars = _dbContext.Cars.ToList();
+            var cars = _service.getAllCars();
             return View(cars);
         }
 
@@ -38,35 +39,53 @@ namespace DamianTrans.Controllers
         [HttpPost("create")]
         public IActionResult Create([FromForm] CreateCarDto dto)
         {
-            var car = _mapper.Map<Car>(dto);
-            _dbContext.Cars.Add(car);
-            _dbContext.SaveChanges();
+            _service.createCar(dto);
 
             return RedirectToAction("Index");
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Delete([FromRoute] int id)
+        [HttpGet("edit/{id}")]
+        public IActionResult Edit([FromRoute] int id)
         {
-            var car = _dbContext.Cars.FirstOrDefault(r => r.Id == id);
+            var carDto = _service.findCarForEdit(id);
 
-            if (car == null)
+            if (carDto == null)
             {
                 return NotFound();
-            }
+            }    
+
+            return View(carDto);
+        }
+
+        [HttpPost("edit/{id}")]
+        public IActionResult Edit([FromRoute] int id, [FromForm] CreateCarDto dto)
+        {
+            var car = _service.editCar(id, dto);
+
+            if (car == null)
+                return NotFound();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet("delete/{id}")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            var car = _service.findCarToDelete(id);
+
+            if (car == null)
+                return NotFound();
 
             return View(car);
         }
 
-        [HttpPost("{id}"), ActionName("Delete")]
+        [HttpPost("delete/{id}"), ActionName("delete")]
         public IActionResult DeleteConfirmed ([FromRoute] int id)
         {
-            var car = _dbContext.Cars.FirstOrDefault(r => r.Id == id);
-            if (car is null)
-                return View("Error");
+            var car = _service.deleteCar(id);
 
-            _dbContext.Remove(car);
-            _dbContext.SaveChanges();
+            if (car is null)
+                return NotFound();
 
             return RedirectToAction("Index");
         }

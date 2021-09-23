@@ -1,4 +1,5 @@
 using DamianTrans.Entities;
+using DamianTrans.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +30,8 @@ namespace DamianTrans
             services.AddDbContext<DamianTransDbContext>();
             services.AddScoped<ProjectSeeder>();
             services.AddAutoMapper(this.GetType().Assembly);
+
+            services.AddScoped<ICarService, CarService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +42,7 @@ namespace DamianTrans
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //app.UseExceptionHandler("/Home/Error");
             }
             else
             {

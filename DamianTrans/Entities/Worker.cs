@@ -25,6 +25,7 @@ namespace DamianTrans.Entities
         public string PhoneNumber { get; set; }
         [Required]
         [MaxLength(30)]
+        [EmailAddress]
         public string Email { get; set; }
         [Required]
         public DateTime DateOfEmployment { get; set; }

@@ -13,6 +13,7 @@ namespace DamianTrans
         public ProjectMappingProfile()
         {
             CreateMap<CreateCarDto, Car>();
+            CreateMap<Car, CreateCarDto>();
         }
     }
 }
