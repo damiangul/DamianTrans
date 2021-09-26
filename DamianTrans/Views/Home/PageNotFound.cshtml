@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Error404";
+    string notFoundMessage = "Sorry, The page cannot be found : ";
+    string pageNotFound = Context.Request.Cookies["PageNotFound"];
+    if (pageNotFound == null)
+    {
+        pageNotFound = TempData["errorMessage"].ToString();
+    }
+
+}
+
+<div id="dataSection">
+    <div class="TextLine Label">@notFoundMessage<b>@pageNotFound</b></div>
+</div>

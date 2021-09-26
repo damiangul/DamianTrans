@@ -1,4 +1,5 @@
 using DamianTrans.Entities;
+using DamianTrans.Middleware;
 using DamianTrans.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -52,6 +53,8 @@ namespace DamianTrans
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseMiddleware<ErrorHandler>();
 
             app.UseRouting();
 

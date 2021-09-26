@@ -51,7 +51,8 @@ namespace DamianTrans.Controllers
 
             if (carDto == null)
             {
-                return NotFound();
+                TempData["errorMessage"] = "Car does not exist";
+                return RedirectToAction("PageNotFound", "Home");
             }    
 
             return View(carDto);
@@ -63,7 +64,10 @@ namespace DamianTrans.Controllers
             var car = _service.editCar(id, dto);
 
             if (car == null)
-                return NotFound();
+            {
+                TempData["errorMessage"] = "Car does not exist";
+                return RedirectToAction("PageNotFound", "Home");
+            }
 
             return RedirectToAction("Index");
         }
@@ -74,7 +78,10 @@ namespace DamianTrans.Controllers
             var car = _service.findCarToDelete(id);
 
             if (car == null)
-                return NotFound();
+            {
+                TempData["errorMessage"] = "Car does not exist";
+                return RedirectToAction("PageNotFound", "Home");
+            }
 
             return View(car);
         }
@@ -85,7 +92,10 @@ namespace DamianTrans.Controllers
             var car = _service.deleteCar(id);
 
             if (car is null)
-                return NotFound();
+            {
+                TempData["errorMessage"] = "Car does not exist";
+                return RedirectToAction("PageNotFound", "Home");
+            }
 
             return RedirectToAction("Index");
         }
