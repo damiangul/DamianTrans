@@ -13,7 +13,16 @@ namespace DamianTrans
         public ProjectMappingProfile()
         {
             CreateMap<CreateCarDto, Car>();
+
             CreateMap<Car, CreateCarDto>();
+
+            CreateMap<RegisterClientDto, Client>()
+                .ForMember(r => r.Address, c => c.MapFrom(dto => new Address() {
+                    City = dto.City,
+                    PostCode = dto.PostCode,
+                    Street = dto.Street,
+                    Number = dto.Number,
+                }));
         }
     }
 }

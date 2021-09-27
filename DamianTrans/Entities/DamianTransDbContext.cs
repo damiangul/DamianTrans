@@ -30,5 +30,9 @@ namespace DamianTrans.Entities
         }
 
         public DbSet<DamianTrans.Models.CreateCarDto> CreateCarDto { get; set; }
+
+        public DbSet<DamianTrans.Models.RegisterClientDto> RegisterClientDto { get; set; }
+
+        public DbSet<DamianTrans.Models.LoginClientWorkerDto> LoginClientWorkerDto { get; set; }
     }
 }

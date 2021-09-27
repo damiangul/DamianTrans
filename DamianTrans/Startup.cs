@@ -1,9 +1,11 @@
 using DamianTrans.Entities;
 using DamianTrans.Middleware;
 using DamianTrans.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,12 +29,20 @@ namespace DamianTrans
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+                    options.LoginPath = "/login";
+                    options.AccessDeniedPath = "/denied";
+                });
 
+            services.AddHttpContextAccessor();
             services.AddDbContext<DamianTransDbContext>();
             services.AddScoped<ProjectSeeder>();
             services.AddAutoMapper(this.GetType().Assembly);
-
+            services.AddScoped<IPasswordHasher<Client>, PasswordHasher<Client>>();
+            services.AddScoped<IPasswordHasher<Worker>, PasswordHasher<Worker>>();
             services.AddScoped<ICarService, CarService>();
+            services.AddScoped<IAccountService, AccountService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +68,7 @@ namespace DamianTrans
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

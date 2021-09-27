@@ -10,7 +10,7 @@ namespace DamianTrans.Entities
     {
         public int Id { get; set; }
         public int AddressId { get; set; }
-        public int RoleId { get; set; }
+        public int RoleId { get; set; } = 1;
         [Required]
         [MaxLength(30)]
         public string Name { get; set; }
